@@ -10,16 +10,8 @@ class Litigation:
 
         """
         
-        self.principal = principal
+        self.owner = owner
         self.hearing_day = hearing_day
-        self.deadlines = {}
-
-class CustomLitigation(Litigation):
-    """Custom Litigation class inheriting Litigation
-
-    """
-
-    pass
 
     
 
