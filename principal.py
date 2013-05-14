@@ -37,18 +37,18 @@ class Principal(Operator):
         self.litigations = []
     
 
-    def addLitigation(self, litigation):
+    def addLitigation(self, lit):
         """Add a new litigation.
         
         """
-        self.litigations.append(litigation)
+        self.litigations.append(lit)
             
         
-    def removeLitigation(self, litigation):
+    def removeLitigation(self, lit):
         """Remove litigation.
 
         """
-        self.litigation.remove(litigation)
+        self.litigation.remove(lit)
 
 class Handler(Operator):
     """Handler Class
