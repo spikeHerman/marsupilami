@@ -1,9 +1,8 @@
-from datetime import date, timedelta
 
 class Deadline:
-    """deadline
+    """Deadline
 
-    Η κλάση deadline
+    Η κλάση deadline. θα πω περισσοτερα
     """
     
     # How many days before deadline you get a notification.
@@ -12,7 +11,7 @@ class Deadline:
     third_notif  = 10
     fourth_notif = 5
     last_notif   = 3
-    days = [first_notif, second_notif, third_notif, fourth_notif, last_notif]
+    margins = [first_notif, second_notif, third_notif, fourth_notif, last_notif]
 
     # Notification message.
     notification = 'Απομένουν {} μέρες μέχρι την προθεσμία.'
@@ -21,7 +20,7 @@ class Deadline:
     def __init__(self, date, belongs_to = None, expired = False):
         """Initialzing a Deadline.
         
-        Σε λιγο.
+        Σχολια σε λιγο.
         """
         
         self.date = date
@@ -34,6 +33,7 @@ class Deadline:
         Επιστρέφει ένα timedelta object που αναφέρει την χρονική απόσταση
         (σε μέρες) απο την deadline.
         """
+        
         today = date.today()
         diff  = self.date - today
         if diff.days > 0:
@@ -41,7 +41,21 @@ class Deadline:
         else:
             raise ValueError('Deadline has passed')
 
-    
+    def notify(self):
+        """Check if it's time for notification, if so return approporiate string.
+
+        """
+        
+        # goes through margins to check if remaining days equals any margin.
+        for margin in self.margins:
+            # if so, returns the appropriate message, using notification
+            if self.remaning_days().days == margin:
+                return self.notification.format(margin)
+        # if no margin matches, return None
+        return None
+
+        
+        
 
     
         

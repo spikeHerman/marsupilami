@@ -54,33 +54,6 @@ class Handler(Operator):
     """Handler Class
     
     Inherits Operator class
-    
-    Instance variables:
-    litigations -- List of current litigations owned by Principal
-
-    Class Methods:
-    addLitigation(litigation) -- adds litigation to litigations instance variable
-    removeLitigation(litigation) -- adds litigation to litigations instance variable
     """
 
-    def __init__(self, name, surname, vat):
-        """Initialization method.
-        
-        """
-        super().__init__(name, surname, vat)
-        self.litigations = []
-    
-
-    def addLitigation(self, litigation):
-        """Add a new litigation.
-        
-        """
-        self.litigations.append(litigation)
-            
-        
-    def removeLitigation(self, litigation):
-        """Remove litigation.
-
-        """
-        self.litigation.remove(litigation)
-
+    pass
