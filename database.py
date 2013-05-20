@@ -24,11 +24,11 @@ class DatabaseManager(object):
         """
         self.conn.close()
 
-    def query(self, sql, seq):
+    def query(self, sql, sequence = None):
         """Query database with arg.
 
         """
-        self.cur.execute(sql, seq)
+        self.cur.execute(sql, sequence)
         self.conn.commit()
         return self.cur
 
