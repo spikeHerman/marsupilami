@@ -8,7 +8,7 @@ class Operator:
     Instance Variables:
     name    -- Operator's name.
     surname -- Operator's surname.
-    vat   -- Operator's VAT registration number.
+    vat     -- Operator's VAT registration number.
     
     """
     def __init__(self, name, surname, vat):
@@ -22,9 +22,15 @@ class Operator:
 class Handler(Operator):
     """Handler Class
     
-    Inherits Operator class
+    Inherits Operator class.
+    Instance Variables:
+    table: the table in database corresponding to handler.
+
+    Class Methods:
+    commit_to_db : commits the handler to database.
+
     """
-    corresponding_table = 'handlers'
+    table = 'handlers'
     
     def __init__(self, name, surname, vat):
         """Initialize a handler instance.
@@ -34,34 +40,23 @@ class Handler(Operator):
         
         """
         super().__init__(name, surname, vat)
+        
         self.handler_id = None
     
-    def commit_to_db(self, db_name):
-        """Commit to database.
-        
+    def commit_to_db(self):
+        """ Commit handler to database.
+
         """
-        pre_script = """
-        INSERT INTO {}(name, surname, vat)
-        VALUES(?, ?, ?)
-        """
-        
-        sql      = pre_script.format(self.corresponding_table)
-        sequence = (self.name, self.surname, self.vat)
-        
+        values = (self.name, self.surname, self.vat)
         if self.handler_id:
-            # need to find the appropriate error
             raise ValueError('This handler has already been commited')
         else:
-            # query database, commit the changes
-            dbm = database.DatabaseManager(db_name)
-            cursor = dbm.query(sql, sequence)
-            # assign handler id to handler object.
+            dbm = database.DatabaseManager()
+            cursor = dbm.insert(self.table, values)
+
             self.handler_id = cursor.lastrowid
-            
-            # close the connection to the database.
+            # close connection to database
             del(dbm)
-            
-        
             
 class Principal(Operator):
     """Define Principal class.
@@ -69,24 +64,25 @@ class Principal(Operator):
     Inherits Operator class.
 
     Instance Variables:
-    litigations -- List of current litigations owned by Principal
+    table: the table in database corresponding to principal.
 
     Class Methods:
-    addLitigation(litigation) -- adds litigation to litigations instance variable
-    removeLitigation(litigation) -- adds litigation to litigations instance variable
+    commit_to_db : commits the principal to database.
 
     """
 
-    correspoding_table = 'principals'
+    table = 'principals'
 
     def __init__(self, name, surname, vat, handler):
         """Initialization method.
         
         """
         super().__init__(name, surname, vat)
-        self.handler = handler
+        
+        self.handled_by = handler
+        self.principal_id = None
     
-    
+    # Probably not necessary.
     # def addLitigation(self, lit):
     #     """Add a new litigation.
         
@@ -100,31 +96,23 @@ class Principal(Operator):
     #     """
     #     self.litigation.remove(lit)
     
-    def commit_to_db(self, db_name):
-        """Commit to database.
-        
+    def commit_to_db(self):
+        """ Commit principal to database.
+
         """
-        pre_script = """
-        INSERT INTO {}(name, surname, vat, principal_handler)
-        VALUES(?, ?, ?, ?)
-        """
-        
-        sql      = pre_script.format(self.corresponding_table)
-        sequence = (self.name, self.surname, self.vat, self.handler.handler_id)
+        values = (self.name, self.surname, self.vat, self.handled_by.handler_id)
         
         if self.principal_id:
-            # need to find the appropriate error
-            raise ValueError('This principal has already been commited')
+            # if instance has principal_id, it has already been commited.
+            raise ValueError('This handler has already been commited') # need to find appropriate error
         else:
-            # query database and commit the changes
-            dbm = database.DatabaseManager(db_name)
-            cursor = dbm.query(sql, sequence)
-            # assign handler id to handler object.
-            self.principal_id = cursor.lastrowid
+            dbm = database.DatabaseManager()
+            cursor = dbm.insert(self.table, values)
 
-             # close the connection to the database.
+            self.principal_id = cursor.lastrowid
+            # close connection to database
             del(dbm)
-            
+        
 
         
     
